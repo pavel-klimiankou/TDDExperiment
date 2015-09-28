@@ -12,6 +12,8 @@
   "author": "Pavel",
   "license": "ISC",
   "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-shell": "^0.4.3",
     "jasmine": "^2.3.2"
   }
 }
