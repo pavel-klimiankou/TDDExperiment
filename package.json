@@ -1,0 +1,17 @@
+{
+  "name": "tdd",
+  "version": "1.0.0",
+  "description": "TDD experiment with mocha and checkmate",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "jasmine"
+  },
+  "author": "Pavel",
+  "license": "ISC",
+  "devDependencies": {
+    "jasmine": "^2.3.2"
+  }
+}
