@@ -1,20 +1,19 @@
 var http = require("http");
+var Dispatcher = require("./webdispatcher").Dispatcher;
 
-exports.WebServer = function (port) {
+exports.WebServer = function (port, dispatcher) {
 	var server;
+
+	if (!dispatcher) {
+		dispatcher = new Dispatcher();
+	}
 
 	if (!port) {
 		throw new Error("Port number cannot be empty");
 	}
 
 	this.start = function () {
-		server = http.createServer(function (request, response) {
-			response.writeHead(200, {
-				'Content-Type': 'text/plain'
-			});
-			response.write("OK");
-			response.end();
-		});
+		server = http.createServer(dispatcher.dispatch);
 
 		server.listen(port);
 	};
@@ -30,5 +29,9 @@ exports.WebServer = function (port) {
 
 	this.isRunning = function () {
 		return !!server;
+	};
+	
+	this.getPort = function () {
+		return port;
 	};
 };
