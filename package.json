@@ -1,7 +1,7 @@
 {
   "name": "tdd",
   "version": "1.0.0",
-  "description": "TDD experiment with mocha and checkmate",
+  "description": "TDD experiment with jasmine",
   "main": "index.js",
   "directories": {
     "test": "test"
@@ -9,8 +9,8 @@
   "scripts": {
     "test": "jasmine"
   },
-  "author": "Pavel",
-  "license": "ISC",
+  "author": "Pavel Klimenkov",
+  "license": "",
   "devDependencies": {
     "gulp": "^3.9.0",
     "gulp-shell": "^0.4.3",
