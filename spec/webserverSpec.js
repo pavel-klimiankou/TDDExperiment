@@ -1,6 +1,8 @@
-var http = require("http");
-var WebServer = require("../webserver.js").WebServer;
-var Dispatcher = require("../webdispatcher.js").Dispatcher;
+var expect = require("expect");
+var WebServer = require("../src/webserver.js").WebServer;
+var Dispatcher = require("../src/webdispatcher.js").Dispatcher;
+var makeACall = require("./stubs/makeACall.js").makeACall;
+
 var fakeFS = function (contentDictionary) {
 	return {
 		hasFile: function (path) {
@@ -12,28 +14,6 @@ var fakeFS = function (contentDictionary) {
 	};
 };
 
-var makeACall = function (server, path, callback) {
-	var request = http.request({
-		host: "127.0.0.1",
-		path: path,
-		port: server.getPort()
-	}, function (res) {
-		var data = "";
-
-		res.on("data", function (chunk) {
-			data += chunk.toString();
-		});
-		res.on("end", function () {
-			callback(null, res, data);
-		});
-	});
-
-	request.on("error", function (error) {
-		callback(error, null);
-	});
-
-	request.end();
-};
 
 describe("basic webserver", function () {
 	var port = 8090, 
@@ -48,8 +28,8 @@ describe("basic webserver", function () {
 
 	it("should be able to start", function () {
 		server = new WebServer(port);
-		expect(server.start).toEqual(jasmine.any(Function));
-		expect(server.start()).toBeUndefined();
+		expect(server.start).toBeA(Function);
+		expect(server.start()).toBe(undefined);
 	});
 
 	it("should require port number", function () {
@@ -58,12 +38,12 @@ describe("basic webserver", function () {
 
 	it("should be able to stop", function () {
 		var server = new WebServer(port);
-		expect(server.stop).toEqual(jasmine.any(Function));
+		expect(server.stop).toBeA(Function);
 	});
 
 	it("should say when it's running", function () {
 		server = new WebServer(port);
-		expect(server.isRunning).toEqual(jasmine.any(Function));
+		expect(server.isRunning).toBeA(Function);
 		expect(server.isRunning()).toBe(false);
 		server.start();
 		expect(server.isRunning()).toBe(true);
@@ -77,7 +57,7 @@ describe("basic webserver", function () {
 
 		makeACall(server, "/", function (error, response) {
 			expect(error).toBe(null);
-			expect(response).not.toBeNull();
+			expect(response).toNotBe(null);
 			done();
 		});
 	});
@@ -89,11 +69,10 @@ describe("webserver", function () {
 	var port = 8081;
 
 	beforeEach(function () {
-		var path = "/default.html";
 		var content = {
 			"/default.html": "/*html*/",
 			"/default.css": "/*css*/",
-			"/default.js": "/*js*/",
+			"/default.js": "/*js*/"
 		};
 		var dispatcher = new Dispatcher(fakeFS(content));
 
@@ -114,8 +93,8 @@ describe("webserver", function () {
 
 		makeACall(server, path, function (error, response, data) {
 			expect(error).toBe(null);
-			expect(response).not.toBe(null);
-			expect(response.headers).not.toBe(null);
+			expect(response).toNotBe(null);
+			expect(response.headers).toNotBe(null);
 			expect(response.headers['content-type']).toEqual("text/html");
 			expect(data).toContain("html");
 			done();
@@ -134,6 +113,7 @@ describe("webserver", function () {
 	it("should serve javascript", function (done) {
 		makeACall(server, "/default.js", function (error, response, data) {
 			expect(error).toBe(null);
+            expect(response.statusCode).toEqual(200);
 			expect(response.headers['content-type']).toEqual("text/javascript");
 			expect(data).toContain("js");
 			done();
@@ -141,5 +121,13 @@ describe("webserver", function () {
 		
 	});
 
-	xit("should fulfill dependences");
+	it("should fulfill dependences", function (done) {
+		makeACall(server, "RequireScripts?i=default.js", function (error, response, data) {
+            expect(error).toBe(null);
+			expect(response.headers['content-type']).toEqual("text/javascript");
+			expect(data).toContain("js");
+			done();
+		});
+	});
+
 });

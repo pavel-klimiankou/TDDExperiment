@@ -12,6 +12,6 @@ exports.webcontent = function (rootDir) {
 
 	this.getFile = function (path) {
 		var fullPath = getFullPath(path);
-		return fs.readFileSync(fullPath);
+		return fs.readFileSync(fullPath).toString();
 	};
 };

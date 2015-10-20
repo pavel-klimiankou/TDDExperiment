@@ -12,8 +12,10 @@
   "author": "Pavel Klimenkov",
   "license": "",
   "devDependencies": {
+    "expect": "^1.12.2",
     "gulp": "^3.9.0",
     "gulp-shell": "^0.4.3",
-    "jasmine": "^2.3.2"
+    "gulp-watch": "^4.3.5",
+    "mocha": "^2.3.3"
   }
 }

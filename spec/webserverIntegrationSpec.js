@@ -1,7 +1,8 @@
+var expect = require("expect");
 var http = require("http");
-var WebServer = require("../webserver.js").WebServer;
-var Dispatcher = require("../webdispatcher.js").Dispatcher;
-var WebContent = require("../webcontent").webcontent;
+var WebServer = require("../src/webserver.js").WebServer;
+var Dispatcher = require("../src/webdispatcher.js").Dispatcher;
+var WebContent = require("../src/webcontent").webcontent;
 
 var makeACall = function (server, path, callback) {
 	var request = http.request({
@@ -32,7 +33,7 @@ describe("webserver linked to file system", function () {
 	var fs = require("fs");
 	var exec = require("child_process").exec;
 
-	beforeAll(function () {
+	before(function () {
 		var writeContentSync = function (dir) {
 			fs.writeFileSync(dir + "/default.html", "<html></html>");
 			fs.writeFileSync(dir + "/default.css", ".css{}");
@@ -50,7 +51,7 @@ describe("webserver linked to file system", function () {
 		writeContentSync(currentDir);
 	});
 
-	afterAll(function () {
+	after(function () {
 		exec("rm -rf " + rootDir);
 	});
 

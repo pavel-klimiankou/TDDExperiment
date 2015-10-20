@@ -1,7 +1,7 @@
-var mimeParser = require("../mimeParser.js");
+var expect = require("expect");
+var mimeParser = require("../src/mimeParser.js");
 
 describe("MIME parser", function () {
-
 	it("should recognize text/html from html", function () {
 		var path = "/file/default.html";
 		expect(mimeParser.getContentType(path)).toEqual("text/html");

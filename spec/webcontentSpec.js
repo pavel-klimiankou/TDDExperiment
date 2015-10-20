@@ -1,10 +1,12 @@
+var expect = require("expect");
+
 describe("webcontentSpec", function () {
 	var tmpDir = require("os").tmpdir();
 	var rootDir = tmpDir + "/web";
 	var fs = require("fs");
 	var exec = require("child_process").exec;
 
-	beforeAll(function () {
+	before(function () {
 		var writeContentSync = function (dir) {
 			fs.writeFileSync(dir + "/default.html", "<html></html>");
 			fs.writeFileSync(dir + "/default.css", ".css{}");
@@ -22,13 +24,13 @@ describe("webcontentSpec", function () {
 		writeContentSync(currentDir);
 	});
 
-	afterAll(function () {
+	after(function () {
 		exec("rm -rf " + rootDir);
 	});
 
 	var webcontent;
 	beforeEach(function () {
-		var WebContent = new require("../webcontent.js").webcontent;
+		var WebContent = new require("../src/webcontent.js").webcontent;
 		webcontent = new WebContent(rootDir);
 	});
 
@@ -49,8 +51,8 @@ describe("webcontentSpec", function () {
 	});
 
 	it("should provide content to existing files", function () {
-		expect(webcontent.getFile("/default.html")).toContain("html");
-		expect(webcontent.getFile("/default.css")).toContain("css");
-		expect(webcontent.getFile("/default.js")).toContain("function");
+		expect(webcontent.getFile("/default.html")).toContain("html", "Html file contains some html");
+		expect(webcontent.getFile("/default.css")).toContain("css", "Css file contains some css");
+		expect(webcontent.getFile("/default.js")).toContain("function", "javascript file contains some javascript");
 	});
 });
