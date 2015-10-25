@@ -2,22 +2,7 @@ var expect = require("expect");
 var WebServer = require("../src/WebServer.js").WebServer;
 var Dispatcher = require("../src/Dispatcher.js").Dispatcher;
 var makeACall = require("./stubs/makeACall.js").makeACall;
-
-var fakeFS = function (contentDictionary) {
-	var normalizePath = function (path) {
-		var path = path.trim();
-
-		return path[0] === "/" ? path.slice(1) : path;
-	};
-	return {
-		hasFile: function (path) {
-			return normalizePath(path) in contentDictionary;
-		},
-		getFile: function (path) {
-			return contentDictionary[normalizePath(path)];
-		}
-	};
-};
+var fakeFS = require("./stubs/FakeFS.js").FakeFS;
 
 
 describe("basic webserver", function () {
