@@ -4,12 +4,17 @@ var Dispatcher = require("../src/webdispatcher.js").Dispatcher;
 var makeACall = require("./stubs/makeACall.js").makeACall;
 
 var fakeFS = function (contentDictionary) {
+	var normalizePath = function (path) {
+		var path = path.trim();
+
+		return path[0] === "/" ? path.slice(1) : path;
+	};
 	return {
 		hasFile: function (path) {
-			return path in contentDictionary;
+			return normalizePath(path) in contentDictionary;
 		},
 		getFile: function (path) {
-			return contentDictionary[path];
+			return contentDictionary[normalizePath(path)];
 		}
 	};
 };
@@ -70,9 +75,9 @@ describe("webserver", function () {
 
 	beforeEach(function () {
 		var content = {
-			"/default.html": "/*html*/",
-			"/default.css": "/*css*/",
-			"/default.js": "/*js*/"
+			"default.html": "/*html*/",
+			"default.css": "/*css*/",
+			"default.js": "/*js*/"
 		};
 		var dispatcher = new Dispatcher(fakeFS(content));
 
