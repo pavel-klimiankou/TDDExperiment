@@ -1,5 +1,5 @@
 var expect = require("expect");
-var Dispatcher = require("../src/webdispatcher").Dispatcher;
+var Dispatcher = require("../src/Dispatcher.js").Dispatcher;
 
 var NOOP = function () {};
 

@@ -1,7 +1,7 @@
 var expect = require("expect");
 var http = require("http");
 var WebServer = require("../src/webserver.js").WebServer;
-var Dispatcher = require("../src/webdispatcher.js").Dispatcher;
+var Dispatcher = require("../src/Dispatcher.js").Dispatcher;
 var WebContentRoot = require("../src/WebContentRoot").WebContentRoot;
 
 var makeACall = function (server, path, callback) {

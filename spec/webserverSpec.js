@@ -1,6 +1,6 @@
 var expect = require("expect");
 var WebServer = require("../src/webserver.js").WebServer;
-var Dispatcher = require("../src/webdispatcher.js").Dispatcher;
+var Dispatcher = require("../src/Dispatcher.js").Dispatcher;
 var makeACall = require("./stubs/makeACall.js").makeACall;
 
 var fakeFS = function (contentDictionary) {

@@ -1,7 +1,8 @@
 exports.StaticResourceBundler = function (storageProvider) {
     var fs = storageProvider;
     var bundlePath = "/RequireScripts";
-    var jsContentType = require("./mimeParser.js").getContentType("randomfile.js");
+    var mimeParser = require("./mimeParser.js");
+    var jsContentType = mimeParser.getContentType("randomfile.js");
 
     this.canHandle = function (url) {
         return url.pathname === bundlePath;

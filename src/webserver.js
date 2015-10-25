@@ -1,5 +1,5 @@
 var http = require("http");
-var Dispatcher = require("./webdispatcher").Dispatcher;
+var Dispatcher = require("./Dispatcher.js").Dispatcher;
 
 exports.WebServer = function (port, dispatcher) {
 	var server;

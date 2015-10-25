@@ -7,8 +7,8 @@ var ContentFS = function () {
 	this.getFile = function () {return null;};
 };
 
-exports.Dispatcher = function (storageProvider) {
-	var resourceBundler = new StaticResourceBundler(storageProvider);
+exports.Dispatcher = function (webContentRoot) {
+	var resourceBundler = new StaticResourceBundler(webContentRoot);
 
 	var doDispatch = function (req, res) {
 		var url = req.url;
@@ -18,10 +18,10 @@ exports.Dispatcher = function (storageProvider) {
 		var contentType;
 
 		if (method === "GET") {
-			if (storageProvider.hasFile(path)) {
+			if (webContentRoot.hasFile(path)) {
 				contentType = mimeParser.getContentType(path);
 				res.writeHead(200, {"Content-Type": contentType});
-				res.write(storageProvider.getFile(path));
+				res.write(webContentRoot.getFile(path));
 			} else if (resourceBundler.canHandle(parsedUrl)) {
 				contentType = resourceBundler.getContentType(parsedUrl);
 				res.writeHead(200, {"Content-Type": contentType});
@@ -36,8 +36,8 @@ exports.Dispatcher = function (storageProvider) {
 
 	};
 
-	if (!storageProvider) {
-		storageProvider = new ContentFS();
+	if (!webContentRoot) {
+		webContentRoot = new ContentFS();
 	}
 
 	this.dispatch = function (req, res) {
