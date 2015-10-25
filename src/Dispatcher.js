@@ -1,29 +1,42 @@
-var StaticResourceBundler = require("./StaticResourceBundler.js").StaticResourceBundler;
+var PrefetchDependencyHttpHandler = require("./PrefetchDependencyHttpHandler.js").PrefetchDependencyHttpHandler;
 var StaticFileHttpHandler = require("./StaticFileHttpHandler.js").StaticFileHttpHandler;
+var RequestNotHandledHttpHandler = require("./RequestNotHandledHttpHandler.js").RequestNotHandledHttpHandler;
 var urlParser = require("url");
 var ContentNotFound = require("./ContentNotFound.js").ContentNotFound;
-var Content = require("./Content.js").Content;
 
 exports.Dispatcher = function (webContentRoot) {
-    var staticFileHandler = new StaticFileHttpHandler(webContentRoot);
-	var resourceBundler = new StaticResourceBundler(webContentRoot);
+	var httpHandlers = [
+		new StaticFileHttpHandler(webContentRoot),
+		new PrefetchDependencyHttpHandler(webContentRoot),
+		new RequestNotHandledHttpHandler()
+	];
+
+	var findHandler = function (url) {
+		for (var i = 0; i < httpHandlers.length; i++) {
+			if (httpHandlers[i].canHandle(url)) {
+				return httpHandlers[i];
+			}
+		}
+		return null;
+	};
+
+	var getResponseStatus = function (response) {
+		return response instanceof ContentNotFound ? 404 : 200;
+	};
 
 	var doDispatch = function (req, res) {
         var url = urlParser.parse(req.url);
+		var handler = findHandler(url);
         var response;
         var status;
 
-        if (staticFileHandler.canHandle(url)) {
-            response = staticFileHandler.getContent(url);
-        } else if (resourceBundler.canHandle(url)) {
-            var contentType = resourceBundler.getContentType(url);
-            var text = resourceBundler.getContent(url);
-            response = new Content(contentType, text);
-        } else {
-            response = new ContentNotFound(url.path);
-        }
+		if (handler) {
+			response = handler.getContent(url);
+		} else {
+			throw new Error("There's no handler for current request url: " + req.url);
+		}
 
-        status = response instanceof ContentNotFound ? 404 : 200;
+        status = getResponseStatus(response);
 
         res.writeHead(status, {"Content-Type": response.type});
         res.write(response.text);
@@ -37,7 +50,7 @@ exports.Dispatcher = function (webContentRoot) {
 			res.write("internal error happened");
 			res.write("\n");
 			res.write(e.message);
-			if (e.stach) {
+			if (e.stack) {
 				res.write("\n");
 				res.write(e.stack);
 			}
