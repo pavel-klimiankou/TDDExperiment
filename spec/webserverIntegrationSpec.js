@@ -1,6 +1,6 @@
 var expect = require("expect");
 var http = require("http");
-var WebServer = require("../src/webserver.js").WebServer;
+var WebServer = require("../src/WebServer.js").WebServer;
 var Dispatcher = require("../src/Dispatcher.js").Dispatcher;
 var WebContentRoot = require("../src/WebContentRoot").WebContentRoot;
 

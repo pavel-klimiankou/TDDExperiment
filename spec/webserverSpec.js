@@ -1,5 +1,5 @@
 var expect = require("expect");
-var WebServer = require("../src/webserver.js").WebServer;
+var WebServer = require("../src/WebServer.js").WebServer;
 var Dispatcher = require("../src/Dispatcher.js").Dispatcher;
 var makeACall = require("./stubs/makeACall.js").makeACall;
 
