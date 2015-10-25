@@ -39,7 +39,7 @@ describe("webdispatcher", function () {
 
 		var dispatcher = new Dispatcher(fakeFS);
 		
-		dispatcher.dispatch(getRequestStub("/any-path-will-do"), getResponseStub());
+		dispatcher.dispatch(getRequestStub("/any-path-will-do.html"), getResponseStub());
 		expect(hasFileSpy).toHaveBeenCalled();
 		expect(getFileSpy).toHaveBeenCalled();
 	});
