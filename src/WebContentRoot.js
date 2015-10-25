@@ -1,4 +1,4 @@
-exports.webcontent = function (rootDir) {
+exports.WebContentRoot = function (rootDir) {
 	var fs = require("fs");
 
 	var getFullPath = function (path) {

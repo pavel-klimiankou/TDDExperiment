@@ -2,7 +2,7 @@ var expect = require("expect");
 var http = require("http");
 var WebServer = require("../src/webserver.js").WebServer;
 var Dispatcher = require("../src/webdispatcher.js").Dispatcher;
-var WebContent = require("../src/webcontent").webcontent;
+var WebContentRoot = require("../src/WebContentRoot").WebContentRoot;
 
 var makeACall = function (server, path, callback) {
 	var request = http.request({
@@ -58,7 +58,7 @@ describe("webserver linked to file system", function () {
 	var server;
 
 	beforeEach(function () {
-		var webcontent = new WebContent(rootDir);
+		var webcontent = new WebContentRoot(rootDir);
 		var dispatcher = new Dispatcher(webcontent);
 
 		server = new WebServer(9999, dispatcher);

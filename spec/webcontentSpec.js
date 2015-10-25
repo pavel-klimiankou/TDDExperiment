@@ -30,8 +30,8 @@ describe("webcontentSpec", function () {
 
 	var webcontent;
 	beforeEach(function () {
-		var WebContent = new require("../src/webcontent.js").webcontent;
-		webcontent = new WebContent(rootDir);
+		var WebContentRoot = new require("../src/WebContentRoot.js").WebContentRoot;
+		webcontent = new WebContentRoot(rootDir);
 	});
 
 	it("should say whether file exists", function () {
