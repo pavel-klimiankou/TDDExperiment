@@ -3,6 +3,7 @@ var http = require("http");
 var WebServer = require("../src/WebServer.js").WebServer;
 var Dispatcher = require("../src/Dispatcher.js").Dispatcher;
 var WebContentRoot = require("../src/WebContentRoot").WebContentRoot;
+var HttpHandlerFactory = require("../src/HttpHandlerFactory.js").HttpHandlerFactory;
 
 var makeACall = function (server, path, callback) {
 	var request = http.request({
@@ -59,7 +60,8 @@ describe("webserver linked to file system", function () {
 
 	beforeEach(function () {
 		var webcontent = new WebContentRoot(rootDir);
-		var dispatcher = new Dispatcher(webcontent);
+		var httpHandlers = new HttpHandlerFactory().getDefaultHandlers(webcontent);
+		var dispatcher = new Dispatcher(httpHandlers);
 
 		server = new WebServer(9999, dispatcher);
 		server.start();

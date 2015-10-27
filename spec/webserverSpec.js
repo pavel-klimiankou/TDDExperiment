@@ -1,6 +1,7 @@
 var expect = require("expect");
 var WebServer = require("../src/WebServer.js").WebServer;
 var Dispatcher = require("../src/Dispatcher.js").Dispatcher;
+var HttpHandlerFactory = require("../src/HttpHandlerFactory.js").HttpHandlerFactory;
 var makeACall = require("./stubs/makeACall.js").makeACall;
 var fakeFS = require("./stubs/FakeFS.js").FakeFS;
 
@@ -64,7 +65,9 @@ describe("webserver", function () {
 			"default.css": "/*css*/",
 			"default.js": "/*js*/"
 		};
-		var dispatcher = new Dispatcher(fakeFS(content));
+		var storage = fakeFS(content);
+		var httpHandlers = new HttpHandlerFactory().getDefaultHandlers(storage);
+		var dispatcher = new Dispatcher(httpHandlers);
 
 		server = new WebServer(port++, dispatcher);
 

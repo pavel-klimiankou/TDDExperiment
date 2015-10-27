@@ -1,16 +1,7 @@
-var PrefetchDependencyHttpHandler = require("./PrefetchDependencyHttpHandler.js").PrefetchDependencyHttpHandler;
-var StaticFileHttpHandler = require("./StaticFileHttpHandler.js").StaticFileHttpHandler;
-var RequestNotHandledHttpHandler = require("./RequestNotHandledHttpHandler.js").RequestNotHandledHttpHandler;
 var urlParser = require("url");
 var ContentNotFound = require("./ContentNotFound.js").ContentNotFound;
 
-exports.Dispatcher = function (webContentRoot) {
-	var httpHandlers = [
-		new StaticFileHttpHandler(webContentRoot),
-		new PrefetchDependencyHttpHandler(webContentRoot),
-		new RequestNotHandledHttpHandler()
-	];
-
+exports.Dispatcher = function (httpHandlers) {
 	var findHandler = function (url) {
 		for (var i = 0; i < httpHandlers.length; i++) {
 			if (httpHandlers[i].canHandle(url)) {
@@ -59,4 +50,3 @@ exports.Dispatcher = function (webContentRoot) {
 	};
 
 };
-

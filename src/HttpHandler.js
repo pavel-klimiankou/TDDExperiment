@@ -1,6 +1,4 @@
 exports.HttpHandler = function (canHandleImp, getContentImp) {
-    return {
-        canHandle: canHandleImp,
-        getContent: getContentImp
-    };
+    this.canHandle = canHandleImp;
+    this.getContent = getContentImp;
 };
