@@ -63,7 +63,8 @@ describe("webserver", function () {
 		var content = {
 			"default.html": "/*html*/",
 			"default.css": "/*css*/",
-			"default.js": "/*js*/"
+			"default.js": "/*js*/",
+			"index.html": "/*index*/"
 		};
 		var storage = fakeFS(content);
 		var httpHandlers = new HttpHandlerFactory().getDefaultHandlers(storage);
@@ -79,6 +80,17 @@ describe("webserver", function () {
 			server.stop();
 			server = null;
 		}
+	});
+
+	it("should redirect empty url to /index.html", function (done) {
+		var path = "/";
+
+		makeACall(server, path, function (error, response, data) {
+			expect(error).toBe(null);
+			expect(response.headers['content-type']).toEqual("text/html");
+			expect(data).toContain("index");
+			done();
+		});
 	});
 
 	it("should serve html files", function (done) {
